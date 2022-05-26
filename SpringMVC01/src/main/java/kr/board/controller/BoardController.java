@@ -37,8 +37,10 @@ public class BoardController{	// new BoardController();
 		return "redirect:/boardList.do"; // redirect
 	}
 	@GetMapping("/boardContent.do")
-	public String boardContent(@RequestParam("idx") int idx, Model model) { // ?idx=6
+	public String boardContent(int idx, Model model) { // ?idx=6
 		Board vo=mapper.boardContent(idx);
+		// 조회수 증가
+		mapper.boardCount(idx);
 		model.addAttribute("vo", vo); // ${vo.idx}...
 		return "boardContent"; // boardContent.jsp
 	}
@@ -46,6 +48,16 @@ public class BoardController{	// new BoardController();
 	public String boardDelete(@PathVariable("idx") int idx) { // ?idx=6
 		mapper.boardDelete(idx); //삭제		
 		return "redirect:/boardList.do";
+	}	
+	@GetMapping("/boardUpdateForm.do/{idx}")
+	public String boardUpdateForm(@PathVariable("idx") int idx, Model model) {
+		Board vo=mapper.boardContent(idx);
+		model.addAttribute("vo", vo);		
+		return "boardUpdate"; // boardUpdate.jsp
 	}
-	
+	@PostMapping("/boardUpdate.do")
+	public String boardUpdate(Board vo) { // idx, title, content
+		mapper.boardUpdate(vo); // 수정		
+		return "redirect:/boardList.do";
+	}
 }
