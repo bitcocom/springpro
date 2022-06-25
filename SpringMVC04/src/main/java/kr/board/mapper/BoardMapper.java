@@ -20,4 +20,6 @@ public interface BoardMapper {
      
      @Update("update myboard set count=count+1 where idx=#{idx}")
      public void boardCount(int idx);
+	 
+   
 }

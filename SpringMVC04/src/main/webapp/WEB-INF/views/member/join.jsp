@@ -113,7 +113,9 @@
                 <span id="passMessage" style="color: red"></span><input type="button" class="btn btn-primary btn-sm pull-right" value="등록" onclick="goInsert()"/>
              </td>             
            </tr>
-         </table>
+         </table>   
+         <input type="hidden" name="${_csrf.parameterName}"
+                              value="${_csrf.token}"/>      
       </form>    
     </div>
     <!--  다이얼로그창(모달) -->

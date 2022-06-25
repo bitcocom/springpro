@@ -37,3 +37,10 @@ create table mem_tbl(
 delete from mem_tbl;
 
 select * from mem_tbl;
+
+ select * from myboard 
+    where 
+     idx > (select MAX(idx) from myboard) - #{pageNumber}*10 
+    and
+     idx <=(select MAX(idx) from myboard) - (#{pageNumber}-1)*10 
+    order by idx desc

@@ -42,7 +42,9 @@
                 <input type="submit" class="btn btn-primary btn-sm pull-right" value="로그인"/>
              </td>             
            </tr>
-         </table>
+         </table> 
+         <input type="hidden" name="${_csrf.parameterName}"
+                              value="${_csrf.token}"/>   
       </form> 
     </div>
    	<!-- 실패 메세지를 출력(modal) -->

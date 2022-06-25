@@ -27,7 +27,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">회원사진등록양식</div>
     <div class="panel-body">
-      <form action="${contextPath}/memImageUpdate.do" method="post" enctype="multipart/form-data">
+      <form action="${contextPath}/memImageUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
          <input type="hidden" name="memID" value="${mvo.memID}"/>
          <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;">
            <tr>
