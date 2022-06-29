@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.board.mapper.MemberMapper">
+  
+	<resultMap type="kr.board.entity.Member" id="memberMap">
+		<id property="memIdx" column="memIdx"/>
+		<result property="memID" column="memID"/>
+		<result property="memPassword" column="memPassword"/>
+		<result property="memName" column="memName"/>
+		<result property="memAge" column="memAge"/>
+		<result property="memGender" column="memGender"/>
+		<result property="memEmail" column="memEmail"/>
+		<result property="memProfile" column="memProfile"/>
+		<collection property="authList" resultMap="authMap">
+		</collection>
+	</resultMap>
+	
+	<resultMap type="kr.board.entity.AuthVO" id="authMap">
+		<id property="no" column="no"/>
+		<result property="memID" column="memID"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+  
+  <select id="registerCheck" resultType="kr.board.entity.Member">
+    select * from mem_stbl where memID=#{memID}
+  </select>
+  
+  <insert id="register" parameterType="kr.board.entity.Member">
+     insert into
+     mem_stbl(memIdx,memID,memPassword,memName,memAge,memGender,memEmail,memProfile)
+     values((select IFNULL(MAX(memId)+1,1) from mem_stbl mem) ,
+     #{memID},#{memPassword},#{memName},#{memAge},#{memGender},#{memEmail},#{memProfile})
+  </insert>
+  
+  <select id="memLogin"  
+                        resultMap="memberMap">
+       select * from mem_stbl mem LEFT OUTER JOIN mem_auth auth on
+       mem.memID=auth.memID where mem.memID=#{username}
+  </select>
+  
+  <update id="memUpdate" parameterType="kr.board.entity.Member">
+     update mem_stbl set memPassword=#{memPassword}, memName=#{memName}, 
+            memAge=#{memAge},memGender=#{memGender},memEmail=#{memEmail} 
+            where memID=#{memID}      
+  </update>
+  
+  <!-- 수정(회원,권한 join) -->
+  <select id="getMember" resultMap="memberMap">
+     select * from mem_stbl mem LEFT OUTER JOIN mem_auth auth on
+     mem.memID=auth.memID where mem.memID=#{memID}
+  </select>  
+  
+  <update id="memProfileUpdate" parameterType="kr.board.entity.Member">
+     update mem_stbl set memProfile=#{memProfile} where memID=#{memID}
+  </update>
+  
+  <insert id="authInsert" parameterType="kr.board.entity.AuthVO">
+     INSERT INTO mem_auth(memID, auth) values(#{memID}, #{auth})   
+  </insert>
+  
+  <delete id="authDelete">
+    delete from mem_auth where memID=#{memID}
+  </delete>
+</mapper>
